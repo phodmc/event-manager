@@ -33,6 +33,39 @@ app.get("/", (req, res) => {
   res.send("Hello from the backend!");
 });
 
+app.get("/api", (req, res) => {
+  res.json({
+    name: "Foday",
+    addr: "Bakau",
+    books: [
+      {
+        author: "Michael Connelly",
+        title: "Angels Flight",
+        genre: "Mystery",
+        price: "4.99",
+      },
+      {
+        author: "Agatha Christie",
+        title: "Death on the Nile",
+        genre: "Thriller",
+        price: "$6.99",
+      },
+      {
+        author: "Michael Connelly",
+        title: "Brass Verdict",
+        genre: "Crime",
+        price: "$9.99",
+      },
+      {
+        author: "Agatha Christie",
+        title: "Death on the Nile",
+        genre: "Thriller",
+        price: "$6.99",
+      },
+    ],
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
