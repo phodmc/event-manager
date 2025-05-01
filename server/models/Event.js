@@ -8,11 +8,14 @@ const eventSchema = new Schema(
     date: { type: Date, required: true },
     location: { type: String },
     capacity: { type: Number, default: 0 },
-    ticketPrice: { type: Number, default: 0 },
-    ticketsSold: { type: Number, default: 0 },
     category: {
       type: String,
-      enum: ["music", "conference", "sports", "other"],
+      enum: ["music", "conference", "sports", "others"],
+    },
+    organizer: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     status: {
       type: String,
