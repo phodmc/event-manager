@@ -24,7 +24,7 @@ mongoose
   .catch((err) => console.log("MongoDB connection error: ", err));
 
 // routes - for testing
-app.use("/", eventRoutes);
+app.use("/api", eventRoutes);
 
 // app.use("/", userRoutes);
 
