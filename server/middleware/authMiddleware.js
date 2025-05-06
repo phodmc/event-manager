@@ -15,11 +15,22 @@ const authMiddleware = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // get user from token but exclude password
-      req.user = await User.findById(decoded.id).select("-password");
+      let user = await User.findById(decoded.id).select("-password");
+
+      // check if user is verified and has admin role
+      if (user.isVerified && user.role == "admin") {
+        req.user = user;
+      } else {
+        res
+          .status(401)
+          .json({ message: "Not authorized, not verified or not admin" });
+      }
+
+      // req.user = await User.findById(decoded.id).select("-password");
 
       next(); // call the next middleware or route handler
     } catch (error) {
-      console.error("Authentication faile:", error);
+      console.error("Authentication failed:", error);
       res.status(401).json({ message: "Not authorized, token failed" });
     }
   }
