@@ -17,9 +17,12 @@ const user = new User({
 
 const createAdmin = async () => {
   try {
-    // connect to MongoDB
-    mongoose.connect(process.env.MONGO_URI);
-    console.log("Connected to MongoDB for seeding");
+    if (mongoose.connection.readyState !== 1) {
+      console.log("Database not connected. Seeding will not run");
+      return;
+    }
+
+    console.log("Seeding database...");
 
     // check for existing admin User
     const existingUser = await User.findOne({
@@ -30,12 +33,10 @@ const createAdmin = async () => {
       console.log("Admin already exist");
     } else {
       const newAdmin = await user.save();
-      console.log(newAdmin);
+      console.log("Admin user created successfully: ", newAdmin);
     }
   } catch (error) {
     console.error("seeding error:", error);
-  } finally {
-    await mongoose.disconnect();
   }
 };
 
