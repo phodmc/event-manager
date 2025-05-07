@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
+const createAdmin = require("./utils/seedAdmin");
+
 // routes
 const eventRoutes = require("./routes/eventRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -20,7 +22,10 @@ app.use(express.json());
 // connect to MongoDB Atlas
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("connected to MongoDB Atlas"))
+  .then(() => {
+    console.log("connected to MongoDB Atlas");
+    if (process.env.SEED == "true") createAdmin();
+  })
   .catch((err) => console.log("MongoDB connection error: ", err));
 
 // routes - for testing
