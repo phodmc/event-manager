@@ -52,7 +52,8 @@ const registerUser = async (req, res) => {
       _id: savedUser._id,
       name: savedUser.name,
       email: savedUser.email,
-      message: "User registered Successfully",
+      message:
+        "Registration successful. Your account is pending admin verification",
     });
     // res.status(201).json(savedUser);
   } catch (error) {
