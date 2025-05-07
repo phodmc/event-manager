@@ -6,12 +6,6 @@ const User = require("../models/User");
 // load environment variables
 dotenv.config();
 
-// connect to mongo database
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("Connected to MongoDB successfully"))
-  .catch((err) => console.log(err));
-
 // define admin User
 const user = new User({
   name: "admin",
@@ -22,8 +16,12 @@ const user = new User({
 });
 
 const createAdmin = async () => {
-  // check for existing admin User
   try {
+    // connect to MongoDB
+    mongoose.connect(process.env.MONGO_URI);
+    console.log("Connected to MongoDB for seeding");
+
+    // check for existing admin User
     const existingUser = await User.findOne({
       email: "admin@admin.com",
       role: "admin",
@@ -31,8 +29,8 @@ const createAdmin = async () => {
     if (existingUser) {
       console.log("Admin already exist");
     } else {
-      await user.save();
-      console.log(user);
+      const newAdmin = await user.save();
+      console.log(newAdmin);
     }
   } catch (error) {
     console.error("seeding error:", error);
