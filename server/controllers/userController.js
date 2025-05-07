@@ -40,7 +40,13 @@ const registerUser = async (req, res) => {
       res.status(409).json({ message: "Email is already registered" });
 
     // create new user
-    const newUser = new User({ name, email, password });
+    const newUser = new User({
+      name,
+      email,
+      password,
+      isVerified: false,
+      role: "user",
+    });
     const savedUser = await newUser.save();
     res.status(201).json({
       _id: savedUser._id,
@@ -67,6 +73,7 @@ const loginUser = async (req, res) => {
         name: user.name,
         email: user.email,
         token: token,
+        role: user.role,
       });
     } else {
       res.status(401).json({ message: "Invalid credentials" });
