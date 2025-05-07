@@ -65,8 +65,9 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // check for valid email
+    // retrieve user using email
     const user = await User.findOne({ email }).select("+password");
+
     if (user && (await user.comparePassword(password))) {
       const token = generateToken(user._id);
       res.json({
@@ -75,6 +76,10 @@ const loginUser = async (req, res) => {
         email: user.email,
         token: token,
         role: user.role,
+      });
+    } else if (user && !user.isVerified) {
+      res.status(401).json({
+        message: "Can't login. User not verified. Contact administrator",
       });
     } else {
       res.status(401).json({ message: "Invalid credentials" });
